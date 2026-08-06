@@ -1,4 +1,4 @@
-/auth/*
-/download/*
-/article/*
+# /auth/*
+# /download/*
+# /article/*
 .env

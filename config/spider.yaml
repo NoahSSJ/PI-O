@@ -1,0 +1,3 @@
+# config/spiders.yaml
+sites:
+- name: 'weibo'

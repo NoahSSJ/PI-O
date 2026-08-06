@@ -126,15 +126,15 @@ class WeiBoSpider(BaseSpider):
             task_dict = json.loads(task)
             pprint(task_dict)
             task_id = str(task_dict['task_id'])
-            task_dir = self.p.joinpath(task_id)
+            task_dir = self.p.joinpath("weibo", task_id)
             task_dir.mkdir(parents=True, exist_ok=True)
             for index, item in enumerate(task_dict['video_list'], start=1):
                 video_bytes =  WeiBoSpider.session.get(url=item).content
-                video_path = self.p.joinpath(task_id, f'{index}.mp4')
+                video_path = task_dir.joinpath(f'{index}.mp4')
                 Path(video_path).write_bytes(video_bytes)
             for index, item in enumerate(task_dict['pic_list'], start=1):
                 pic_bytes = WeiBoSpider.session.get(url=item).content
-                pic_path = self.p.joinpath(task_id, f'{index}.png')
+                pic_path = task_dir.joinpath(f'{index}.png')
                 Path(pic_path).write_bytes(pic_bytes)
             params = {
                 'is_reload': '1',

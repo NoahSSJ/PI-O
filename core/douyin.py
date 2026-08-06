@@ -50,6 +50,18 @@ class DouyinSpider(BaseSpider):
         super().__init__()
         self.url = url
 
+    @staticmethod
+    def get_a_bogus_signature(params):
+        # params.pop('a_bogus', None)
+        js_path = r'signature\a_bogus.js'
+        open_args = "/aweme/v1/web/comment/list/reply/?" + urllib.parse.urlencode(params)
+        with open(js_path, mode='r', encoding='utf-8') as f:
+            js_code = f.read()
+        ctx = execjs.compile(js_code)
+        a_bogus = ctx.call("get_ab", open_args)
+        params['a_bogus'] = a_bogus
+        return params
+    
     def get_userspace_page(self):
         params = {
             'device_platform': 'webapp',
@@ -100,9 +112,11 @@ class DouyinSpider(BaseSpider):
             'timestamp': '1785971195',
             'x-secsdk-web-signature': 'ff9ce3bd134d2d2bd3a59c0fec8de0db',
         }
-
+        params = DouyinSpider.get_a_bogus_signature(params=params)
+        
         response = DouyinSpider.session.get('https://www.douyin.com/aweme/v1/web/aweme/post/', params=params)
         # pprint(response.json())
+        print(response.text)
         json_dict = response.json()
         for index, item in enumerate(json_dict['aweme_list'], start=1):
             aweme_id = item['aweme_id']
@@ -123,14 +137,14 @@ class DouyinSpider(BaseSpider):
                     image_list.append(item["url_list"][0])
                 self.logger.debug(image_list)
                 
-            task = DataItem(
-                name='',
-                sec_user_id='',
-                aweme_id=aweme_id,
-                desc=desc,
-                pic_list=image_list,
-                video_list=video_list
-            )
+            # task = DataItem(
+            #     name='',
+            #     sec_user_id='',
+            #     aweme_id=aweme_id,
+            #     desc=desc,
+            #     pic_list=image_list,
+            #     video_list=video_list
+            # )
             
             
 

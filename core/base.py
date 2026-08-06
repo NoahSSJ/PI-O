@@ -21,6 +21,10 @@ class BaseSpider(ABC):
         # print(self.save_dir)
         self.p = Path(self.save_dir)
         self.p.mkdir(parents=True, exist_ok=True)
+
+        self.auth_dir = os.getenv('AUTH_DIR')
+        self.auth = Path(self.auth_dir)
+        self.auth.mkdir(parents=True, exist_ok=True)
         
         # 2. Redis 连接（从环境变量读取）
         try:
@@ -85,9 +89,9 @@ class BaseSpider(ABC):
             self.r.close()
         self.logger.info("资源已释放")
     
-    def __del__(self):
-        """析构时自动清理资源（但不保证一定会调用）"""
-        try:
-            self.close()
-        except:
-            pass
+    # def __del__(self):
+    #     """析构时自动清理资源（但不保证一定会调用）"""
+    #     try:
+    #         self.close()
+    #     except:
+    #         pass

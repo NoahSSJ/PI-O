@@ -1,3 +1,17 @@
 # config/spiders.yaml
 sites:
-- name: 'weibo'
+ - name: "weibo"
+   enabled: true
+   spider_class: "core.weibo.WeiBoSpider"
+   redis_key_prefix: "weibo"
+   users:
+    - "user_001"
+
+ - name: "bilibili"
+   enabled: false
+   spider_class: "core.bilibili.BiliBiliSpider"
+   redis_key_prefix: "bilibili"
+   users:
+    - "user_001"
+
+

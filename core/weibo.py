@@ -16,6 +16,7 @@ import math
 import sqlite3
 from dataclasses import asdict, dataclass
 from .base import BaseSpider
+from typing import Optional
 
 
 @dataclass
@@ -60,7 +61,7 @@ class WeiBoSpider(BaseSpider):
     }
 
 
-    def __init__(self, url):
+    def __init__(self, url: Optional[str] = None):
         super().__init__()
         self.uid = url.split('/')[-1].split('?')[0]
     
@@ -160,12 +161,13 @@ class WeiBoSpider(BaseSpider):
                 break
 
     @classmethod
-    def run(cls):
-        obj = WeiBoSpider(url='https://weibo.com/u/7893929649?tabtype=feed')
-        # a = obj.get_userspace_page()
-        # obj.get_user_info()
-        obj.download()
+    def run(cls, url):
+        obj = WeiBoSpider(url=url)
+        a = obj.get_userspace_page()
+        for i in a:
+            print(i)
+        # obj.download()
        
 
-if __name__ == "__main__":
-    WeiBoSpider.run()
+# if __name__ == "__main__":
+#     WeiBoSpider.run()

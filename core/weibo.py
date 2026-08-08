@@ -74,7 +74,7 @@ class WeiBoSpider(BaseSpider):
         json_dict = response.json()
         pprint(json_dict)
 
-    def get_userspace_page(self):
+    def get_userspace_page(self, max_page=None):
         page = 1
         while True:
             params = {
@@ -118,6 +118,8 @@ class WeiBoSpider(BaseSpider):
                 self.r.lpush('wb_list', task_json)
                 yield task
             page += 1
+            if page >= max_page:
+                return
     
     def download(self):
         task_list_key = 'wb_list'
@@ -164,10 +166,10 @@ class WeiBoSpider(BaseSpider):
                 break
 
     @classmethod
-    def run(cls, url, flag=True):
+    def run(cls, url, flag, page):
         obj = WeiBoSpider(url=url)
         if flag:
-            a = obj.get_userspace_page()
+            a = obj.get_userspace_page(max_page=page)
             for i in a:
                 print(i)
         else:

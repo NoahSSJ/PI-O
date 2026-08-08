@@ -4,10 +4,12 @@ sites:
    enabled: true
    spider_class: "core.weibo.WeiBoSpider"
    redis_key_prefix: "weibo"
-   flag: true
    url: "https://weibo.com/u/7893929649?tabtype=feed"
    users:
-    - "user_001"
+    - name: "任务1"
+      url: "https://weibo.com/u/7893929649?tabtype=feed"
+      flag: true
+      page: 10
 
  - name: "bilibili"
    enabled: false

@@ -55,10 +55,10 @@ class WeiBoSpider(BaseSpider):
         'x-xsrf-token': 'OpidnecPIHNkhLUm7-FBzW1p',
         'cookie': 'SCF=An5MUm-mu1X6x-0V5FRUjd-LAa4KRORjI-lp2JHLAbsMiD1gFuuG4rKdpQUE6Wobe8QAoqiRfCu5hVy8MnBD5qc.; SINAGLOBAL=46399716003.42463.1772234524992; ULV=1774265938331:6:4:3:3650358741503.078.1774265938329:1774265625480; XSRF-TOKEN=OpidnecPIHNkhLUm7-FBzW1p; SUB=_2A25HdYnADeRhGeFJ4lUR9CvMyTyIHXVkCoMIrDV8PUNbmtAYLRKjkW9Nfr-Ikkz8F6TsHvp-WZ-8sddvSZZJNs1-; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Wh1DLBSZYmiLfaEW7-PxKxc5NHD95QNS0.NehBfehz7Ws4DqcjMi--NiK.Xi-2Ri--ciKnRi-zNS0M4S05XSK5Ee5tt; ALF=02_1788446352; WBPSESS=BWHVdTaHUrxrFPjSI85rtSHhHy60IqJ5jMnU_veNA6aGYytnnoXoSf6Fxw8UiQsAgJXJ_3KHyBqj_z7o7x6t54tqP7I_mpQK5fyPptTlCZNeB86DWM_FdX6l8ZKp795WmM1LPB2QYtJCoibvB71YEQ==',
     }
-    session.proxies = {
-        "http": "http://127.0.0.1:7890",
-        "https": "https://127.0.0.1:7890"
-    }
+    # session.proxies = {
+    #     "http": "http://127.0.0.1:7890",
+    #     "https": "https://127.0.0.1:7890"
+    # }
 
 
     def __init__(self, url: Optional[str] = None):

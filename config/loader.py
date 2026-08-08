@@ -22,9 +22,8 @@ class ConfigLoader:
             module = importlib.import_module(module_path)
             spider_class = getattr(module, class_name)
             print(spider_class)
-            # spider_instance = spider_class.run('https://weibo.com/u/7893929649?tabtype=feed')
+            spider_instance = spider_class.run('https://weibo.com/u/7893929649?tabtype=feed')
 
 
 
 
-a = ConfigLoader.load_config()

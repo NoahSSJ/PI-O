@@ -22,7 +22,7 @@ class BaseSpider(ABC):
         self.p = Path(self.save_dir)
         self.p.mkdir(parents=True, exist_ok=True)
 
-        self.auth_dir = os.getenv('AUTH_DIR')
+        self.auth_dir = os.getenv('AUTH_DIR', "./auth")
         self.auth = Path(self.auth_dir)
         self.auth.mkdir(parents=True, exist_ok=True)
         

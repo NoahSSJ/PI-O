@@ -8,7 +8,7 @@ from pathlib import Path
 class ConfigLoader:
     @staticmethod
     def load_config():
-        config_path=r"config\spider.yaml"
+        config_path=Path(__file__).parent / "spider.yaml"
         # 将项目根目录加入 sys.path，确保能 import core 等模块
         project_root = Path(__file__).resolve().parent.parent
         if str(project_root) not in sys.path:

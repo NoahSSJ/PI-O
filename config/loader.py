@@ -7,7 +7,8 @@ from pathlib import Path
 
 class ConfigLoader:
     @staticmethod
-    def load_config(config_path=r"config\spider.yaml"):
+    def load_config():
+        config_path=r"config\spider.yaml"
         # 将项目根目录加入 sys.path，确保能 import core 等模块
         project_root = Path(__file__).resolve().parent.parent
         if str(project_root) not in sys.path:
@@ -17,12 +18,13 @@ class ConfigLoader:
             config =  yaml.safe_load(f)
         sites = [site for site in config['sites'] if site['enabled'] == True]
         for i in sites:
+            pprint(i)
             module_path, class_name = i['spider_class'].rsplit('.', 1)
             print(module_path, class_name)
             module = importlib.import_module(module_path)
             spider_class = getattr(module, class_name)
             print(spider_class)
-            spider_instance = spider_class.run('https://weibo.com/u/7893929649?tabtype=feed')
+            spider_instance = spider_class.run(i['url'], i['flag'])
 
 
 

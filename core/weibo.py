@@ -75,46 +75,49 @@ class WeiBoSpider(BaseSpider):
         pprint(json_dict)
 
     def get_userspace_page(self):
-        params = {
-            'uid': f'{self.uid}',
-            'page': '1',
-            'feature': '0',
-        }
-        response = WeiBoSpider.session.get('https://www.weibo.com/ajax/statuses/mymblog', params=params)
-        json_dict = response.json()
-        # pprint(json_dict)
-        for index, item in enumerate(json_dict['data']['list'], start=1):
-            task_id = item['id']
-            text = item['text']
-            name = item['user']['screen_name']
-            pic_list = []
-            video_list = []
-            self.logger.debug(text)
-            if h265_mp4_hd := item.get('page_info', {}).get('media_info', {}).get('h265_mp4_hd'):
-                video_url = h265_mp4_hd
-                video_list.append(video_url)
-                
-            pic_infos = item.get('pic_infos', {})
-            if pic_infos:
-                for key, value in pic_infos.items():
-                    pic_url = value.get('largest', {}).get('url', {})
-                    self.logger.debug(pic_url)
-                    pic_list.append(pic_url)
-            if self.r.sismember('wb_set', task_id):
-                self.logger.debug(f"Task: {task_id} exists, skip.")
-                continue
-            task = TaskItem(
-                name=name,
-                task_id=task_id,      # 转成 int
-                text=text,
-                pic_list=pic_list,
-                video_list=video_list,       # 留空，后续填充
-            )
-            task_dict = asdict(task)
-            task_json = json.dumps(task_dict)
-            self.r.sadd('wb_set', task_id)
-            self.r.lpush('wb_list', task_json)
-            yield task
+        page = 1
+        while True:
+            params = {
+                'uid': f'{self.uid}',
+                'page': f'{page}',
+                'feature': '0',
+            }
+            response = WeiBoSpider.session.get('https://www.weibo.com/ajax/statuses/mymblog', params=params)
+            json_dict = response.json()
+            # pprint(json_dict)
+            for index, item in enumerate(json_dict['data']['list'], start=1):
+                task_id = item['id']
+                text = item['text']
+                name = item['user']['screen_name']
+                pic_list = []
+                video_list = []
+                self.logger.debug(text)
+                if h265_mp4_hd := item.get('page_info', {}).get('media_info', {}).get('h265_mp4_hd'):
+                    video_url = h265_mp4_hd
+                    video_list.append(video_url)
+                    
+                pic_infos = item.get('pic_infos', {})
+                if pic_infos:
+                    for key, value in pic_infos.items():
+                        pic_url = value.get('largest', {}).get('url', {})
+                        self.logger.debug(pic_url)
+                        pic_list.append(pic_url)
+                if self.r.sismember('wb_set', task_id):
+                    self.logger.debug(f"Task: {task_id} exists, skip.")
+                    continue
+                task = TaskItem(
+                    name=name,
+                    task_id=task_id,      # 转成 int
+                    text=text,
+                    pic_list=pic_list,
+                    video_list=video_list,       # 留空，后续填充
+                )
+                task_dict = asdict(task)
+                task_json = json.dumps(task_dict)
+                self.r.sadd('wb_set', task_id)
+                self.r.lpush('wb_list', task_json)
+                yield task
+            page += 1
     
     def download(self):
         task_list_key = 'wb_list'
@@ -161,12 +164,18 @@ class WeiBoSpider(BaseSpider):
                 break
 
     @classmethod
-    def run(cls, url):
+    def run(cls, url, flag=True):
         obj = WeiBoSpider(url=url)
-        a = obj.get_userspace_page()
-        for i in a:
-            print(i)
-        # obj.download()
+        if flag:
+            a = obj.get_userspace_page()
+            for i in a:
+                print(i)
+        else:
+            obj.download()
+
+
+
+        
        
 
 # if __name__ == "__main__":

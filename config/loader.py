@@ -14,7 +14,7 @@ class ConfigLoader:
         sites = [site for site in config['sites'] if site['enabled'] == True]
         for site in sites:
             pprint(site)
-            module_path, class_name = i['spider_class'].rsplit('.', 1)
+            module_path, class_name = site['spider_class'].rsplit('.', 1)
             print(module_path, class_name)
             module = importlib.import_module(module_path)
             spider_class = getattr(module, class_name)

@@ -72,7 +72,7 @@ class WeiBoSpider(BaseSpider):
         }
         response = WeiBoSpider.session.get('https://www.weibo.com/ajax/profile/info', params=params)
         json_dict = response.json()
-        # pprint(json_dict)
+        pprint(json_dict)
 
     def get_userspace_page(self, max_page=None):
         page = 1

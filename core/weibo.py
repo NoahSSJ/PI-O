@@ -38,22 +38,22 @@ class WeiBoSpider(BaseSpider):
         'accept': 'application/json, text/plain, */*',
         'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
         'cache-control': 'no-cache',
-        'client-version': 'v1.1.237',
+        'client-version': 'v1.1.238',
         'pragma': 'no-cache',
         'priority': 'u=1, i',
-        'referer': 'https://www.weibo.com/u/7893929649?lpage=profileRecom',
+        'referer': 'https://weibo.com/u/6445284541',
         'sec-ch-ua': '"Not=A?Brand";v="99", "Microsoft Edge";v="151", "Chromium";v="151"',
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Windows"',
         'sec-fetch-dest': 'empty',
         'sec-fetch-mode': 'cors',
         'sec-fetch-site': 'same-origin',
-        'server-version': 'v2026.08.04.3',
-        'traceparent': '00-f3674a031dbfdc7845d9d04a9b18ca9e-f545c849741c8d9e-00',
+        'server-version': 'v2026.08.07.1',
+        'traceparent': '00-e31eff0f3d937ac2babeeb3c44b6dc11-aee54251c9144d76-00',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0',
         'x-requested-with': 'XMLHttpRequest',
-        'x-xsrf-token': 'OpidnecPIHNkhLUm7-FBzW1p',
-        'cookie': 'SCF=An5MUm-mu1X6x-0V5FRUjd-LAa4KRORjI-lp2JHLAbsMiD1gFuuG4rKdpQUE6Wobe8QAoqiRfCu5hVy8MnBD5qc.; SINAGLOBAL=46399716003.42463.1772234524992; ULV=1774265938331:6:4:3:3650358741503.078.1774265938329:1774265625480; XSRF-TOKEN=OpidnecPIHNkhLUm7-FBzW1p; SUB=_2A25HdYnADeRhGeFJ4lUR9CvMyTyIHXVkCoMIrDV8PUNbmtAYLRKjkW9Nfr-Ikkz8F6TsHvp-WZ-8sddvSZZJNs1-; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Wh1DLBSZYmiLfaEW7-PxKxc5NHD95QNS0.NehBfehz7Ws4DqcjMi--NiK.Xi-2Ri--ciKnRi-zNS0M4S05XSK5Ee5tt; ALF=02_1788446352; WBPSESS=BWHVdTaHUrxrFPjSI85rtSHhHy60IqJ5jMnU_veNA6aGYytnnoXoSf6Fxw8UiQsAgJXJ_3KHyBqj_z7o7x6t54tqP7I_mpQK5fyPptTlCZNeB86DWM_FdX6l8ZKp795WmM1LPB2QYtJCoibvB71YEQ==',
+        'x-xsrf-token': 'TvTBRK23BSO4wkxr_bJyxqWN',
+        'cookie': 'SCF=An5MUm-mu1X6x-0V5FRUjd-LAa4KRORjI-lp2JHLAbsMiD1gFuuG4rKdpQUE6Wobe8QAoqiRfCu5hVy8MnBD5qc.; SINAGLOBAL=46399716003.42463.1772234524992; ULV=1785917155643:7:1:1:5203381097796.272.1785917155579:1774265938331; PC_TOKEN=d75213a7e2; XSRF-TOKEN=TvTBRK23BSO4wkxr_bJyxqWN; SUB=_2A25HfPVYDeRhGeFJ4lUR9CvMyTyIHXVk8AiQrDV8PUNbmtAbLWT6kW9Nfr-IkndVb50_thlo4DKNlxhuV_TTDIwF; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Wh1DLBSZYmiLfaEW7-PxKxc5NHD95QNS0.NehBfehz7Ws4DqcjMi--NiK.Xi-2Ri--ciKnRi-zNS0M4S05XSK5Ee5tt; ALF=02_1788875272; WBPSESS=BWHVdTaHUrxrFPjSI85rtSHhHy60IqJ5jMnU_veNA6aGYytnnoXoSf6Fxw8UiQsAgJXJ_3KHyBqj_z7o7x6t5y_w4GbDXdjAE-q6pDs5p8xjrNTYe4IQZJ6wcuPI8I3zNczYvbxgBFP2wp8LMcqGPw==',
     }
     # session.proxies = {
     #     "http": "http://127.0.0.1:7890",
@@ -72,7 +72,7 @@ class WeiBoSpider(BaseSpider):
         }
         response = WeiBoSpider.session.get('https://www.weibo.com/ajax/profile/info', params=params)
         json_dict = response.json()
-        pprint(json_dict)
+        # pprint(json_dict)
 
     def get_userspace_page(self, max_page=None):
         page = 1
@@ -84,7 +84,7 @@ class WeiBoSpider(BaseSpider):
             }
             response = WeiBoSpider.session.get('https://www.weibo.com/ajax/statuses/mymblog', params=params)
             json_dict = response.json()
-            # pprint(json_dict)
+            pprint(json_dict)
             for index, item in enumerate(json_dict['data']['list'], start=1):
                 task_id = item['id']
                 text = item['text']
@@ -118,6 +118,7 @@ class WeiBoSpider(BaseSpider):
                 self.r.lpush('wb_list', task_json)
                 yield task
             page += 1
+            time.sleep(random.uniform(10,60))
             if page >= max_page:
                 return
     
@@ -162,7 +163,7 @@ class WeiBoSpider(BaseSpider):
             md = "\n".join([f"- {item}" for item in text_list])
             print(md)
             task_cnt += 1
-            if task_cnt == 1:
+            if task_cnt == 5:
                 break
 
     @classmethod

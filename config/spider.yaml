@@ -9,7 +9,7 @@ sites:
     - name: "任务1"
       url: "https://weibo.com/u/7893929649?tabtype=feed"
       flag: true
-      page: 10
+      page: 1
 
  - name: "bilibili"
    enabled: false

@@ -5,6 +5,7 @@ import sqlite3
 from pathlib import Path
 import redis
 from dotenv import load_dotenv
+import sys
 
 # 在模块顶部加载环境变量
 load_dotenv()
@@ -42,12 +43,17 @@ class BaseSpider(ABC):
             self.r = None  # 或 raise 中断程序
         
         # 3. 配置日志
-        log_level = logging.DEBUG if os.getenv('DEBUG_MODE', 'false').lower() == 'true' else logging.WARNING
+        log_level = logging.DEBUG if os.getenv('DEBUG_MODE', 'false').lower() == 'true' else logging.INFO
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
         logging.basicConfig(
             level=log_level,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            stream=sys.stdout,
+            force=True
         )
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger.info(f"📝 日志级别: {logging.getLevelName(log_level)}")
         
         # 4. SQLite 数据库连接（使用 Path 拼接）
         db_dir = Path("database")

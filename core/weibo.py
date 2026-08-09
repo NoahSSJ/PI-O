@@ -72,7 +72,7 @@ class WeiBoSpider(BaseSpider):
         }
         response = WeiBoSpider.session.get('https://www.weibo.com/ajax/profile/info', params=params)
         json_dict = response.json()
-        pprint(json_dict)
+        # pprint(json_dict)
 
     def get_userspace_page(self, max_page=None):
         page = 1
@@ -84,7 +84,7 @@ class WeiBoSpider(BaseSpider):
             }
             response = WeiBoSpider.session.get('https://www.weibo.com/ajax/statuses/mymblog', params=params)
             json_dict = response.json()
-            pprint(json_dict)
+            # pprint(json_dict)
             for index, item in enumerate(json_dict['data']['list'], start=1):
                 task_id = item['id']
                 text = item['text']

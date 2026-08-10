@@ -1,6 +1,6 @@
 
-require('./env.js')
-require('./xhs_code_439.js')
+require('./signature/env.js')
+require('./signature/xhs_code_439.js')
 const crypto = require('crypto');
 function md5Encrypt(data) {
     return crypto.createHash('md5').update(data).digest('hex');

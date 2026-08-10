@@ -1,38 +1,29 @@
-version: "3.8"
-
 services:
-  # ------------------------------------------------------------------
-  # 生产者 1 — 爬取"任务1"的微博
-  # ------------------------------------------------------------------
   producer-1:
     build: .
     container_name: pi-producer-1
+    network_mode: "host"  # 添加这一行
     command: python producer.py spider_demo.yaml 0
     environment:
-      - REDIS_HOST=host.docker.internal
+      - REDIS_HOST=127.0.0.1  # 改为 127.0.0.1
       - REDIS_PORT=6379
       - REDIS_DB=0
       - REDIS_PASSWORD=1234
     restart: unless-stopped
     volumes:
       - ./download:/app/download
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    # 删除 extra_hosts，删除 ports 映射（host 模式不需要）
 
-  # ------------------------------------------------------------------
-  # 生产者 2 — 爬取"任务2"的微博
-  # ------------------------------------------------------------------
   producer-2:
     build: .
     container_name: pi-producer-2
+    network_mode: "host"
     command: python producer.py spider_demo.yaml 1
     environment:
-      - REDIS_HOST=host.docker.internal
+      - REDIS_HOST=127.0.0.1
       - REDIS_PORT=6379
       - REDIS_DB=0
       - REDIS_PASSWORD=1234
     restart: unless-stopped
     volumes:
       - ./download:/app/download
-    extra_hosts:
-      - "host.docker.internal:host-gateway"

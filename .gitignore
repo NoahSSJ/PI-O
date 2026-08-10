@@ -2,4 +2,4 @@
 # /download/*
 # /article/*
 /config/spider.yaml
-.env
+# .env

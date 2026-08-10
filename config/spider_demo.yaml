@@ -9,6 +9,11 @@ sites:
       url: "https://weibo.com/u/5031578294"
       flag: true
       page: 1
+    
+    - name: "任务2"
+      url: "https://weibo.com/3318767642?refer_flag=1001030103_"
+      flag: true
+      page: 1
 
  - name: "bilibili"
    enabled: false

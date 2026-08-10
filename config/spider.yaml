@@ -4,7 +4,6 @@ sites:
    enabled: true
    spider_class: "core.weibo.WeiBoSpider"
    redis_key_prefix: "weibo"
-   url: ""
    users:
     - name: "任务1"
       url: ""
